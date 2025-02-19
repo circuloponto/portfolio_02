@@ -1,41 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-coverflow';
 
 // import required modules
-import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 
-// Import CSS module
+// Import CSS module and components
 import styles from './SwiperSlider.module.css';
+import Breadcrumbs from './Breadcrumbs';
 
 const projects = [
   {
     id: 1,
     title: 'Consultis',
     description: 'This was my firsy project, a simple html / css / javascript website for a local business.',
-    category: 'React'
+    category: 'HTML/CSS/JS'
   },
   {
     id: 2,
-    title: 'Project 2',
-    description: 'Description of project 2',
-    category: 'Node.js'
+    title: 'Tonus',
+    description: 'A pedagogical music app that lets you explore chord shapes in various ways.',
+    category: 'ReactJS'
   },
   {
     id: 3,
-    title: 'Project 3',
-    description: 'Description of project 3',
-    category: 'UI/UX'
+    title: 'Lambda',
+    description: 'A dynamic blog about functional programming in Javascript',
+    category: 'Functional JS'
   }
 ];
 
 const SwiperSlider = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleSlideChange = (swiper) => {
+    setActiveIndex(swiper.realIndex);
+  };
+
   return (
     <section id="projects" className={styles.projects}>
       <div className={styles.projectsTitleText}>
@@ -47,11 +52,9 @@ const SwiperSlider = () => {
         centeredSlides={true}
         loop={true}
         navigation={true}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Navigation, Pagination]}
+        modules={[Navigation]}
         className={styles.mySwiper}
+        onSlideChange={handleSlideChange}
       >
         {projects.map((project,index) => (
           <SwiperSlide key={project.id} className={styles.slide}>
@@ -63,6 +66,7 @@ const SwiperSlider = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+      <Breadcrumbs totalSlides={projects.length} activeIndex={activeIndex} />
     </section>
   );
 };
